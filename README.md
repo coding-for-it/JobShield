@@ -78,7 +78,7 @@ Client (Browser / API Client)
 
 ### 1. Clone & Setup Environment
 ```bash
-git clone https://github.com/your-username/TrustHire.git
+git clone https://github.com/your-username/JobShield.git
 cd TrustHire
 python -m venv venv
 # On Windows:
@@ -159,17 +159,4 @@ pytest -v
 - **50–74**: `HIGH`
 - **75–100**: `VERY_HIGH`
 
----
-
-## ⚠️ Project Limitations & Disclaimer
-
-> [!NOTE]
-> 1. **Heuristic Rules**: Risk scores are calculated using project-defined heuristic scoring rules and do not represent legally binding fraud determinations.
-> 2. **Website Existence**: The existence of an HTTPS website does not guarantee corporate legitimacy.
-> 3. **Unstructured Data**: External web pages or APIs may block automated HTTP scraping requests.
-> 4. **Community Reports**: User-submitted reports start in a `PENDING` state and require administrative review.
-
----
-
-## 📄 License
-Distributed under the MIT License. See `LICENSE` for details.
+-
