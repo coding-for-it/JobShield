@@ -1,0 +1,27 @@
+# API
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
+email-validator>=2.1.0
+
+# Database (plain MySQL driver, no ORM)
+pymysql>=1.1.0
+cryptography>=42.0.0   # needed by PyMySQL for MySQL 8 password authentication
+
+# Auth
+pyjwt>=2.8.0
+bcrypt>=4.1.2
+
+# Web scraping used by the verification engine
+httpx>=0.26.0
+beautifulsoup4>=4.12.3
+
+# Data analysis (ETL pipeline)
+pandas>=2.0.0
+
+# Frontend
+streamlit>=1.31.0
+
+# Tests
+pytest>=8.0.0

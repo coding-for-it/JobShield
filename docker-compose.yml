@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: jobshield_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: jobshield
+      MYSQL_USER: jobshield_user
+      MYSQL_PASSWORD: jobshield_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ./sql/analytics_schema.sql:/docker-entrypoint-initdb.d/2_analytics_schema.sql
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/3_seed.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build: .
+    container_name: jobshield_backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=jobshield
+      - MYSQL_USER=jobshield_user
+      - MYSQL_PASSWORD=jobshield_pass
+      - JWT_SECRET_KEY=dev_secret_key_change_in_production_1234567890
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRE_MINUTES=1440
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  frontend:
+    build: .
+    container_name: jobshield_frontend
+    command: streamlit run streamlit_app/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    volumes:
+      - .:/app
+
+volumes:
+  mysql_data:
